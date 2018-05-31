@@ -23,8 +23,8 @@ if not Menu.IsKeyDown(CrystalMaiden.optionKey) then return end
 	local heroPos = Entity.GetAbsOrigin(myHero)
 	--local hero = Input.GetNearestHeroToCursor(Entity.GetTeamNum(myHero), Enum.TeamType.TEAM_ENEMY)
 --Ability
-   --local CrystalNove = NPC.GetAbility(myHero, "crystal_maiden_crystal_nova")
-   --local FrostBite = NPC.GetAbility(myHero, "crystal_maiden_frostbite")
+   local CrystalNova = NPC.GetAbility(myHero, "crystal_maiden_crystal_nova")
+   local FrostBite = NPC.GetAbility(myHero, "crystal_maiden_frostbite")
    local Freez = NPC.GetAbility(myHero, "crystal_maiden_freezing_field")
 --Items
    local Dagger  = NPC.GetItem(myHero, "item_blink", true)
@@ -43,6 +43,7 @@ if not Menu.IsKeyDown(CrystalMaiden.optionKey) then return end
 	 if Glimmer and Ability.IsCastable(Glimmer, myMana) then Ability.CastTarget(Glimmer, myHero) return end
 	 if ShadowBlade and Ability.IsCastable(ShadowBlade, myMana) then Ability.CastNoTarget(ShadowBlade) return end
 	 if SilverEdge and Ability.IsCastable(SilverEdge, myMana) then Ability.CastNoTarget(SilverEdge) return end
+	 if CrystalNova and Ability.IsCastable(CrystalNova, myMana) then Ability.CastPosition(CrystalNova, heroPos) return end
 	 if Freez and Ability.IsCastable(Freez, myMana) then Ability.CastNoTarget(Freez) return end
 	 end
 end
