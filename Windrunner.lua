@@ -1,13 +1,14 @@
 local Windrunner = {}
 
 Windrunner.optionKey = Menu.AddKeyOption({"Hero Specific","Windrunner"},"Combo Key",Enum.ButtonCode.KEY_D)
-Windrunner.optionEnableBlink = Menu.AddOption({"Hero Specific","Windrunner"},"Use Blink","Enable Or Disable ")
+Windrunner.optionEnableBlink = Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use Blink","Enable Or Disable ")
 Windrunner.optionEnable = Menu.AddOption({"Hero Specific","Windrunner"},"Enabled","Enable Or Disable ")
-Windrunner.optionEnableBKB= Menu.AddOption({"Hero Specific","Windrunner"},"Use Black King Bar","Enable Or Disable ")
-Windrunner.optionEnableOrchid = Menu.AddOption({"Hero Specific","Windrunner"},"Use Orchid","Enable Or Disable ")
-Windrunner.optionEnableMjollnir = Menu.AddOption({"Hero Specific","Windrunner"},"Use Mjollnir","Enable Or Disable ")
-Windrunner.optionEnableBlood = Menu.AddOption({"Hero Specific","Windrunner"},"Use BloodThorn","Enable Or Disable ")
-Windrunner.optionEnableHex = Menu.AddOption({"Hero Specific","Windrunner"},"Use Hex","Enable Or Disable ")
+Windrunner.optionEnableBKB= Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use Black King Bar","Enable Or Disable ")
+Windrunner.optionEnableOrchid = Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use Orchid","Enable Or Disable ")
+Windrunner.optionEnableMjollnir = Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use Mjollnir","Enable Or Disable ")
+Windrunner.optionEnableBlood = Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use BloodThorn","Enable Or Disable ")
+Windrunner.optionEnableHex = Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use Hex","Enable Or Disable ")
+Windrunner.optionEnableNull = Menu.AddOption({"Hero Specific","Windrunner","Items"},"Use Nullifier","Enable Or Disable ")
 
 --DefendWR
 
@@ -19,14 +20,7 @@ Windrunner.optionEnableShackleshot = Menu.AddOption({ "Hero Specific","Windrunne
 Windrunner.optionEnableWindrun = Menu.AddOption({ "Hero Specific","Windrunner","Skills"},"Use Windrun","Enable Or Disable")
 Windrunner.optionEnableFocusFire = Menu.AddOption({ "Hero Specific","Windrunner","Skills"},"Use FocusFire","Enable Or Disable")
 
---SnowLinken Items
-
-Windrunner.optionEnableForceStaff = Menu.AddOption({ "Hero Specific","Windrunner","SnowLinkenItem"},"Use ForceStaff","Enable Or Disable")
-Windrunner.optionEnableDiffusalBlade1 = Menu.AddOption({ "Hero Specific","Windrunner","SnowLinkenItem"},"Use Diffusal Blade 1","Enable Or Disable")
-Windrunner.optionEnableDiffusalBlade2 = Menu.AddOption({ "Hero Specific","Windrunner","SnowLinkenItem"},"Use Diffusal Blade 2","Enable Or Disable")
-Windrunner.optionEnableHurrican_Pike = Menu.AddOption({ "Hero Specific","Windrunner","SnowLinkenItem"},"Use Hurrican Pike","Enable Or Disable")
-Windrunner.optionEnableEuL = Menu.AddOption({ "Hero Specific","Windrunner","SnowLinkenItem"},"Use EuL","Enable Or Disable")
-Windrunner.optionEnableDagon = Menu.AddOption({ "Hero Specific","Windrunner","SnowLinkenItem"},"Use Dagon","Enable Or Disable")
+--Auto Windrun
 
 function Windrunner.OnUpdate()
  if not Menu.IsEnabled(Windrunner.optionEnable) then return true end	
@@ -70,6 +64,14 @@ if not hero then return end
    
    local myMana = NPC.GetMana(myHero)
 
+--SnowLinken Items
+
+Windrunner.optionEnableForceStaff = Menu.AddOption({ "Hero Specific","Windrunner","Snow Linken Item"},"Use ForceStaff","Enable Or Disable")
+Windrunner.optionEnableHurrican_Pike = Menu.AddOption({ "Hero Specific","Windrunner","Snow Linken Item"},"Use Hurrican Pike","Enable Or Disable")
+Windrunner.optionEnableDiffusalBlade = Menu.AddOption({ "Hero Specific","Windrunner","Snow Linken Item"},"Use Diffusal Blade","Enable Or Disable")
+Windrunner.optionEnableEuL = Menu.AddOption({ "Hero Specific","Windrunner","Snow Linken Item"},"Use EuL","Enable Or Disable")
+Windrunner.optionEnableDagon = Menu.AddOption({ "Hero Specific","Windrunner","Snow Linken Item"},"Use Dagon","Enable Or Disable")
+
 --Items
 
    local blink = NPC.GetItem(myHero,"item_blink", true)
@@ -79,11 +81,11 @@ if not hero then return end
    local Blood = NPC.GetItem(myHero,"item_bloodthorn", true)
    local Mjollnir = NPC.GetItem(myHero,"item_mjollnir", true)
    local DiffusalBlade = NPC.GetItem(myHero,"item_diffusal_blade", true)
-   local DiffusalBlade2 = NPC.GetItem(myHero,"item_diffusal_blade_2", true)
    local ForceStaff = NPC.GetItem(myHero,"item_force_staff", true)
    local EuL = NPC.GetItem(myHero,"item_cyclone", true)
    local Pike = NPC.GetItem(myHero,"item_hurricane_pike", true)                                           
-   
+   local Null = NPC.GetItem(myHero,"item_nullifier", true)
+
 --Radius  
 
   if blink and Menu.IsEnabled(Windrunner.optionEnableBlink) and Ability.IsCastable(blink, myMana) and Menu.IsEnabled(Windrunner.optionEnableBlink) then Ability.CastPosition(blink, mousePos)  return end
@@ -96,18 +98,17 @@ if not hero then return end
 --Combo
 
   if Windrun and Menu.IsEnabled(Windrunner.optionEnableWindrun) and Ability.IsCastable(Windrun, myMana) then Ability.CastNoTarget(Windrun) return end
-  if FocusFire and not NPC.IsLinkensProtected(hero) and Ability.IsCastable(FocusFire, myMana) then Ability.CastTarget(FocusFire, hero) return end
+  if FocusFire and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableFocusFire) and Ability.IsCastable(FocusFire, myMana) then Ability.CastTarget(FocusFire, hero) return end
   if Shackleshot and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableShackleshot) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(Shackleshot, myMana) then Ability.CastTarget(Shackleshot, hero) return end	
   if EuL and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableEuL) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(EuL, myMana) then Ability.CastTarget(EuL, hero) return end
-  if DiffusalBlade2 and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableDiffusalBlade2) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(DiffusalBlade2, myMana) then Ability.CastTarget(DiffusalBlade2, hero) return end  
   if ForceStaff and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableForceStaff) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(ForceStaff, myMana) then Ability.CastTarget(ForceStaff, hero) return end
-  if DiffusalBlade2 and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableDiffusalBlade2) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(DiffusalBlade2, myMana) then Ability.CastTarget(DiffusalBlade2, hero) return end  
-  if DiffusalBlade and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableDiffusalBlade1) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(DiffusalBlade, myMana) then Ability.CastTarget(DiffusalBlade, hero) return end
+  if DiffusalBlade and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableDiffusalBlade) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(DiffusalBlade, myMana) then Ability.CastTarget(DiffusalBlade, hero) return end
   if Pike and NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableHurrican_Pike) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(Pike, myMana) then Ability.CastTarget(Pike, hero) return end
   if BKB and Ability.IsCastable(BKB, 0) and Menu.IsEnabled(Windrunner.optionEnableBKB) then Ability.CastNoTarget(BKB) return end
   if Hex and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableHex) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(Hex, myMana) then Ability.CastTarget(Hex, hero) return end
   if Orchid and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableOrchid) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(Orchid, myMana) then Ability.CastTarget(Orchid, hero) return end
   if Blood and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableBlood) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(Blood, myMana) then Ability.CastTarget(Blood, hero) return end
+  if Null and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableNull) and not NPC.HasState(hero, Enum.ModifierState.MODIFIER_STATE_MAGIC_IMMUNE) and Ability.IsCastable(Null, myMana) then Ability.CastTarget(Null, hero) return end
   if Mjollnir and not NPC.IsLinkensProtected(hero) and Menu.IsEnabled(Windrunner.optionEnableMjollnir) and Ability.IsCastable(Mjollnir, myMana) then Ability.CastTarget(Mjollnir, myHero) return end
 end
 
